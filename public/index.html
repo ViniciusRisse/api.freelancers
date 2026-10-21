@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Propostas Freelancer</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23c9a45c'/><path d='M9 11h14M9 16h14M9 21h9' stroke='%23fffaf0' stroke-width='2.5' stroke-linecap='round'/></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topo">
+    <div class="marca">
+      <span class="logo" aria-hidden="true">✦</span>
+      <div>
+        <h1>Propostas Freelancer</h1>
+        <p>Encontre projetos de sites e envie propostas escritas com IA.</p>
+      </div>
+    </div>
+    <div class="status" id="status" aria-live="polite"></div>
+  </header>
+
+  <nav class="abas" role="tablist">
+    <button role="tab" class="aba ativa" data-aba="buscar" aria-selected="true">Buscar projetos</button>
+    <button role="tab" class="aba" data-aba="colar" aria-selected="false">Colar projeto</button>
+    <button role="tab" class="aba" data-aba="perfil" aria-selected="false">Meu perfil</button>
+    <button role="tab" class="aba" data-aba="historico" aria-selected="false">Histórico</button>
+  </nav>
+
+  <main>
+    <!-- Buscar no Freelancer.com -->
+    <section class="painel" id="aba-buscar">
+      <form class="busca" id="form-busca">
+        <input type="search" id="termo" placeholder="Ex.: website, wordpress, landing page, react" value="website">
+        <button type="submit" class="btn primario">Buscar no Freelancer.com</button>
+      </form>
+      <p class="dica">Mostra projetos abertos agora. Para Workana, 99Freelas e Upwork (sem API aberta para lances), use a aba <b>Colar projeto</b>.</p>
+      <div id="lista-projetos" class="lista"></div>
+    </section>
+
+    <!-- Colar projeto de qualquer plataforma -->
+    <section class="painel" id="aba-colar" hidden>
+      <form id="form-colar" class="cartao formulario">
+        <div class="grade-2">
+          <label>Plataforma
+            <select id="c-plataforma">
+              <option>Workana</option>
+              <option>99Freelas</option>
+              <option>Upwork</option>
+              <option>Freelancer.com</option>
+              <option>Outra</option>
+            </select>
+          </label>
+          <label>Orçamento do cliente
+            <input id="c-orcamento" placeholder="Ex.: R$ 1.500 – 3.000">
+          </label>
+        </div>
+        <label>Título do projeto
+          <input id="c-titulo" placeholder="Ex.: Site institucional para clínica">
+        </label>
+        <label>Descrição do projeto
+          <textarea id="c-descricao" rows="8" required placeholder="Cole aqui a descrição completa do projeto"></textarea>
+        </label>
+        <button type="submit" class="btn primario">Gerar proposta com IA</button>
+      </form>
+    </section>
+
+    <!-- Perfil -->
+    <section class="painel" id="aba-perfil" hidden>
+      <form id="form-perfil" class="cartao formulario">
+        <p class="dica">A IA usa só o que estiver aqui — nada de portfólio inventado. Fica salvo neste navegador.</p>
+        <div class="grade-2">
+          <label>Nome
+            <input id="p-nome" placeholder="Seu nome ou da sua empresa">
+          </label>
+          <label>Habilidades
+            <input id="p-habilidades" placeholder="HTML, CSS, JavaScript, WordPress, React, SEO">
+          </label>
+        </div>
+        <label>Resumo profissional
+          <textarea id="p-resumo" rows="4" placeholder="Há quanto tempo desenvolve sites, tipos de projeto, diferenciais"></textarea>
+        </label>
+        <label>Portfólio e links
+          <textarea id="p-portfolio" rows="3" placeholder="Um link por linha, com uma frase sobre cada projeto"></textarea>
+        </label>
+        <div class="grade-2">
+          <label>Valor por hora
+            <input id="p-valor-hora" placeholder="Ex.: US$ 25 ou R$ 80">
+          </label>
+          <label>Valor mínimo por projeto
+            <input id="p-valor-minimo" placeholder="Ex.: US$ 300 ou R$ 1.200">
+          </label>
+        </div>
+        <button type="submit" class="btn primario">Salvar perfil</button>
+      </form>
+    </section>
+
+    <!-- Histórico -->
+    <section class="painel" id="aba-historico" hidden>
+      <div id="lista-historico" class="lista"></div>
+    </section>
+  </main>
+
+  <!-- Editor da proposta -->
+  <dialog id="editor">
+    <form method="dialog" class="editor" id="form-editor">
+      <header>
+        <div>
+          <span class="selo" id="e-plataforma"></span>
+          <h2 id="e-titulo"></h2>
+          <p class="meta" id="e-orcamento"></p>
+        </div>
+        <button type="button" class="fechar" id="e-fechar" aria-label="Fechar">×</button>
+      </header>
+
+      <label>Pedido extra para a IA (opcional)
+        <input id="e-instrucoes" placeholder="Ex.: mais curta, destacar SEO, oferecer manutenção mensal">
+      </label>
+      <button type="button" class="btn" id="e-gerar">Gerar proposta</button>
+
+      <div id="e-resultado" hidden>
+        <label>Proposta (revise antes de enviar)
+          <textarea id="e-texto" rows="12"></textarea>
+        </label>
+        <div class="grade-2">
+          <label><span>Valor do lance <span id="e-moeda"></span></span>
+            <input id="e-valor" type="number" min="1" step="1">
+          </label>
+          <label>Prazo (dias)
+            <input id="e-prazo" type="number" min="1" step="1">
+          </label>
+        </div>
+        <div class="notas" id="e-notas"></div>
+      </div>
+
+      <footer>
+        <a id="e-link" class="btn" target="_blank" rel="noopener">Abrir projeto</a>
+        <button type="button" class="btn" id="e-copiar" disabled>Copiar texto</button>
+        <button type="button" class="btn primario" id="e-enviar" disabled>Enviar lance</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <div id="aviso" class="aviso" role="status" hidden></div>
+  <script src="app.js"></script>
+</body>
+</html>

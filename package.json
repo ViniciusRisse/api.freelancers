@@ -1,0 +1,17 @@
+{
+  "name": "api-freelancers",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Busca projetos de desenvolvimento de sites em plataformas de freelancers e usa IA para escrever e enviar propostas.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.js"
+  },
+  "engines": {
+    "node": ">=20.12"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.137.0"
+  }
+}
