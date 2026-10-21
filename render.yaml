@@ -1,0 +1,21 @@
+# Configuração para publicar no Render (Blueprint).
+# As chaves (sync: false) são pedidas no painel do Render na hora de criar.
+services:
+  - type: web
+    name: api-freelancers
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: FREELANCER_API
+        value: https://www.freelancer.com
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: FREELANCER_TOKEN
+        sync: false
+      - key: SENHA
+        sync: false

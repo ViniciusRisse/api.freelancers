@@ -9,7 +9,7 @@
     "start": "node --env-file-if-exists=.env server.js"
   },
   "engines": {
-    "node": ">=20.12"
+    "node": ">=22.9"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.137.0"

@@ -21,7 +21,7 @@ Enviar propostas por robô nessas plataformas viola os termos de uso e pode bloq
 
 ## Como rodar
 
-Precisa do **Node.js 20.12 ou mais novo**.
+Precisa do **Node.js 22.9 ou mais novo**.
 
 ```bash
 git clone https://github.com/ViniciusRisse/api.freelancers
@@ -52,7 +52,11 @@ Dica: comece com o sandbox do Freelancer.com para testar o envio sem gastar lanc
 
 ## Publicar
 
-Como o site tem um pequeno servidor (para proteger as chaves), ele não roda no GitHub Pages. Use um serviço que rode Node.js, como Render, Railway ou Fly.io: comando de início `npm start` e as variáveis do `.env` configuradas no painel do serviço.
+Como o site tem um pequeno servidor (para proteger as chaves), ele não roda no GitHub Pages.
+
+**Render (recomendado):** o repositório já tem o arquivo `render.yaml`. No Render, clique em **New → Blueprint**, escolha este repositório e preencha `ANTHROPIC_API_KEY`, `FREELANCER_TOKEN` e `SENHA` quando ele pedir. Depois de alguns minutos, o link do site aparece no painel.
+
+Também funciona em outros serviços de Node.js (Railway, Fly.io): comando de início `npm start` e as variáveis do `.env` configuradas no painel do serviço.
 
 Se publicar na internet, preencha `SENHA` no `.env`: o navegador vai pedir a senha ao abrir o site (o usuário pode ser qualquer um). Sem isso, qualquer pessoa com o link poderia enviar lances na sua conta.
 
