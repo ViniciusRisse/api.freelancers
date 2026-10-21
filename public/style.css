@@ -188,3 +188,9 @@ dialog::backdrop { background: rgb(59 49 37 / .45); }
   }
   .selo.enviado { background: #2e3a26; }
 }
+
+/* Atalho (bookmarklet) */
+.atalho { margin-bottom: 16px; }
+.atalho summary { cursor: pointer; font-weight: 600; }
+.atalho p { margin: 12px 0 0; }
+#link-atalho { cursor: grab; }

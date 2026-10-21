@@ -161,6 +161,8 @@ $("#lista-projetos").addEventListener("click", (e) => {
 
 // ---------- colar projeto ----------
 
+let colarOrigem = null;
+
 $("#form-colar").addEventListener("submit", (e) => {
   e.preventDefault();
   abrirEditor({
@@ -169,9 +171,57 @@ $("#form-colar").addEventListener("submit", (e) => {
     titulo: $("#c-titulo").value.trim() || "Projeto sem título",
     orcamento: $("#c-orcamento").value.trim(),
     descricao: $("#c-descricao").value.trim(),
-    url: null,
+    url: colarOrigem,
   });
 });
+
+// Preenche a aba "Colar projeto" com dados vindos na URL (usado pelo atalho/bookmarklet).
+function aplicarParametrosDaURL() {
+  const q = new URLSearchParams(location.search);
+  if (!q.has("colar") && !q.has("descricao")) return false;
+  abrirAba("colar");
+  const plataforma = q.get("plataforma");
+  if (plataforma) {
+    const sel = $("#c-plataforma");
+    const opcao = [...sel.options].find((o) => o.value.toLowerCase() === plataforma.toLowerCase());
+    sel.value = opcao ? opcao.value : "Outra";
+  }
+  if (q.get("titulo")) $("#c-titulo").value = q.get("titulo");
+  if (q.get("orcamento")) $("#c-orcamento").value = q.get("orcamento");
+  if (q.get("descricao")) $("#c-descricao").value = q.get("descricao");
+  colarOrigem = q.get("origem") || null;
+  history.replaceState(null, "", location.pathname); // limpa a URL para não repetir ao recarregar
+  avisar("Projeto carregado. Revise e clique em Gerar proposta.");
+  return true;
+}
+
+// Monta o botão do atalho (bookmarklet) apontando para o endereço atual do site.
+function construirAtalho() {
+  const destino = location.origin + location.pathname;
+  const codigo =
+    "javascript:(function(){" +
+    "var s=(window.getSelection&&String(window.getSelection()).trim())||'';" +
+    "var t=((document.querySelector('h1')||{}).innerText||document.title||'').trim();" +
+    "var e=document.querySelector('[class*=\"descri\" i],article,main,#content')||document.body;" +
+    "var d=(s||e.innerText||'').replace(/\\n{3,}/g,'\\n\\n').trim().slice(0,3000);" +
+    "var h=location.hostname;" +
+    "var p=/workana/i.test(h)?'Workana':/99freelas/i.test(h)?'99Freelas':/upwork/i.test(h)?'Upwork':/freelancer\\./i.test(h)?'Freelancer.com':'Outra';" +
+    "var u='" + destino + "?colar=1&plataforma='+encodeURIComponent(p)+'&titulo='+encodeURIComponent(t)+'&descricao='+encodeURIComponent(d)+'&origem='+encodeURIComponent(location.href);" +
+    "window.open(u,'_blank');})();";
+  const link = $("#link-atalho");
+  if (link) link.href = codigo;
+  const botao = $("#copiar-atalho");
+  if (botao) {
+    botao.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(codigo);
+        avisar("Código do atalho copiado.");
+      } catch {
+        avisar("Não consegui copiar automaticamente.", true);
+      }
+    });
+  }
+}
 
 // ---------- editor ----------
 
@@ -339,5 +389,6 @@ $("#lista-historico").addEventListener("click", async (e) => {
 // ---------- início ----------
 
 preencherPerfil();
-abrirAba(armazenamento.ler("aba", "buscar"));
+construirAtalho();
+if (!aplicarParametrosDaURL()) abrirAba(armazenamento.ler("aba", "buscar"));
 carregarStatus();

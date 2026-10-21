@@ -19,6 +19,8 @@ Site simples para encontrar projetos de desenvolvimento de sites e enviar propos
 
 Enviar propostas por robô nessas plataformas viola os termos de uso e pode bloquear sua conta, por isso nelas o site gera o texto e você cola.
 
+**Atalho rápido (99freelas, Workana e outras):** na aba **Colar projeto** há um botão que você arrasta para a barra de favoritos do navegador (um *bookmarklet*). Estando na página de um projeto, um clique nele abre este site com a descrição já preenchida — é só gerar a proposta e copiar. O atalho roda no seu próprio navegador, na página que você está vendo, sem acessar o sistema da plataforma.
+
 ## Como rodar
 
 Precisa do **Node.js 22.9 ou mais novo**.
